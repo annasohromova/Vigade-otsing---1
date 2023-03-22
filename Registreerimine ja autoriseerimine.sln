@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Registreerimine ja autoriseerimine", "Registreerimine ja autoriseerimine.pyproj", "{B16A0B12-3179-4054-825F-4C7CA83713EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B16A0B12-3179-4054-825F-4C7CA83713EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16A0B12-3179-4054-825F-4C7CA83713EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EF7D8A6-A6B3-4B89-908F-AD7D2F755BCA}
+	EndGlobalSection
+EndGlobal
