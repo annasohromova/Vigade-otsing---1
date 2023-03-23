@@ -4,10 +4,8 @@
 import random
 from tkinter import *
 
-kasutajad = {'kasutaja': 'salasona'}
 
-import random
-import string
+user_list = {'kasutaja1': 'parool1', 'kasutaja2': 'parool2'}
 kasutajad = [] 
 salasona=[]
 
@@ -27,29 +25,48 @@ aken.geometry('550x600')
 aken.title('Kasutaja registreerimine ja autoriseerimine')
 
 
-def salasona(kasutajad,salasona):
-    if not validate_input():
-        return
-    kasutajad = entry_username.get()
-    salasona = entry_passw.get()
-    if kasutaja in kasutajad:
-        lbl_status.config(text='Kasutajanimi on juba võetud.')
+def authorize(username, password, user_list):
+    # Kontrollime, kas kasutaja on nimekirjas ja kas parool klapib
+    if username in user_list and user_list[username] == password:
+        return True, "Autoriseerimine õnnestus"
     else:
-        kasutajad[kasutaja] = salasona
-        lbl_status.config(text='Kasutaja registreerimine õnnestus.')
+        return False, "Vale kasutajanimi või parool"
 
-def change_password(kasutajad,salasona):
-    kasutaja = entry_username.get()
-    vana_passw = entry_passw.get()
-    new_passw = entry_passw.get()
+#def change_password(kasutaja,vana_passw,new_passw,kasutajad):
+#    kasutaja = entry_username.get()
+#    vana_passw = entry_passw.get()
+#    new_passw = entry_passw.get()
 
-    if kasutaja not in kasutajad:
-        lbl_status.config(text='Kasutajanime ei leitud.')
-    elif kasutaja[kasutajad]!= vana_passw:
-        lbl_status.config(text='Vale salasõna.')
+#    if kasutaja not in kasutajad:
+#        lbl_status.config(text='Kasutajanime ei leitud.')
+#    elif kasutaja[kasutajad]!= vana_passw:
+#        lbl_status.config(text='Vale salasõna.')
+#    else:
+#        kasutaja[kasutajad] = new_passw
+#        lbl_status.config(text='Salasõna muutmine õnnestus.')
+
+def change_password(username, old_password, new_password, user_list):
+    # Kontrollime, kas kasutaja on nimekirjas ja kas vana parool klapib
+    if username in user_list and user_list[username] == old_password:
+        # Muudame kasutaja parooli uueks
+        user_list[username] = new_password
+        return True, "Parooli muutmine õnnestus"
     else:
-        kasutaja[kasutajad] = new_passw
-        lbl_status.config(text='Salasõna muutmine õnnestus.')
+        return False, "Vale kasutajanimi või parool"
+
+
+
+def reset_password(username, user_list):
+    # Kontrollime, kas kasutaja on nimekirjas
+    if username in user_list:
+        # Loome uue juhusliku parooli
+        import random
+        new_password = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890', k=8))
+        # Muudame kasutaja parooli uueks
+        user_list[username] = new_password
+        return True, f"Teie uus parool on: {new_password}"
+    else:
+        return False, "Sellist kasutajat ei eksisteeri"
 
 def automaatne_parool(psword:list):
     str0=".,:;!_*-+()/#¤%&"
@@ -70,7 +87,7 @@ def automaatne_parool(psword:list):
 
 
 
-def registreerimine(kasutajad,salasona):
+def registreerimine(kasutajanimi,kasutajad,salasona):
     kasutajanimi = input("Sisesta kasutajanimi: ")
     if kasutajanimi in kasutajad:
         print("Kasutajanimi on juba võetud.")
@@ -80,7 +97,7 @@ def registreerimine(kasutajad,salasona):
         while True:
             salasona = input("Sisesta parool: ")
             if vale_salasona(salasona):
-                break
+                 break
             else:
                 print("Parool peab sisaldama vähemalt üht numbrit, üht väiketähte, üht suurtähte ja ühte erimärki.")
     else:
@@ -89,7 +106,13 @@ def registreerimine(kasutajad,salasona):
     kasutajad.append(kasutajad)
     salasona.append(salasona)
 
-
+#def register(username, password, user_list):
+#    # Kontrollime, kas kasutajanimi juba eksisteerib
+#    if username in user_list:
+#        return False, "Kasutajanimi on juba võetud"
+#    # Lisame uue kasutaja andmed kasutajate nimekirja
+#    user_list[username] = password
+#    return True, "Kasutaja registreerimine edukas"
 
 
 lbl_username = Label(aken, text='Kasutajanimi:', font='Times 14')
@@ -102,9 +125,9 @@ lbl_pass.pack()
 entry_passw = Entry(aken, show='*', font='Times 14', bg='#6f5a70')
 entry_passw.pack()
 
-btn_reg = Button(aken, text='Registreeri', command=registreerimine, font='Times 14')
+btn_reg = Button(aken, text='Registreeri', command=register, font='Times 14')
 btn_reg.pack()
-btn_login = Button(aken, text='Logi sisse', command=salasona, font='Times 14')
+btn_login = Button(aken, text='Logi sisse', command=authorize, font='Times 14')
 btn_login.pack()
 
 lbl_status = Label(aken, text='', font='Times 14', bg='#6f5a70')
@@ -116,8 +139,8 @@ btn_generate.pack()
 btn_recover = Button(aken, text='Taasta parool', command=change_password, font='Times 14')
 btn_recover.pack()
 
-#btn_change = Button(aken, text='Muuda salasõna', command=salasona_muutmine, font='Times 14')
-#btn_change.pack()
+btn_change = Button(aken, text='Muuda salasõna', command=reset_password, font='Times 14')
+btn_change.pack()
 
 aken.config(bg='#b9c797')
 aken.mainloop()
